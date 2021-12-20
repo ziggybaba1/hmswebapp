@@ -8,6 +8,7 @@ import { faCalendarWeek, faMedkit, faUserAlt } from '@fortawesome/free-solid-svg
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import { _retrieveToken } from '../../Service/function';
+import { BASE_URL } from '../../.env.js';
 
 function Home() {
 const [dashboard, setDashboard] = useState(null);
@@ -16,7 +17,7 @@ const history = useHistory();
         const getDashboard = async ()=>{
             try {
                 let token =await  _retrieveToken();
-            const res=await axios.get("/admin/dashboard",{
+            const res=await axios.get(BASE_URL+"admin/dashboard",{
                    headers: {
                       Authorization: "Bearer "+token
                    }

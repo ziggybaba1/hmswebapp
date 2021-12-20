@@ -15,6 +15,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header";
 import { DepartmentForm } from "../../components/form/department";
 import { DepartmentListTable } from "../../components/table/department";
+import { BASE_URL } from '../../.env.js';
 
 export default function DashboardSepartment({navigation, route}) {
     const [isLoading, setLoaded] = useState(false);
@@ -29,7 +30,7 @@ export default function DashboardSepartment({navigation, route}) {
       setLoaded(true);
       try {
         let token =await  _retrieveToken();
-        const resp=await axios.get('admin/department',{
+        const resp=await axios.get(BASE_URL+'admin/department',{
             headers: {
                Authorization: "Bearer "+token
             }
@@ -48,7 +49,7 @@ export default function DashboardSepartment({navigation, route}) {
     const addDepatment= async (e)=>{
       setLoaded(true);
       let token =await  _retrieveToken();
-      const resp=await axios.post('admin/department',e,{
+      const resp=await axios.post(BASE_URL+'admin/department',e,{
         headers: {
            Authorization: "Bearer "+token
         }

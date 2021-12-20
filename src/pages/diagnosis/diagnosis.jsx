@@ -18,6 +18,7 @@ import { PatientListTable } from "../../components/table/patient";
 import { DiagnosisForm } from "../../components/form/diagnosis";
 import { AppointmentForm } from "../../components/form/appointment";
 import { DiagnosistListTable } from "../../components/table/diagnosis";
+import { BASE_URL } from '../../.env.js';
 
 export default function DashboardDiagnosis({navigation, route}) {
     const [isLoading, setLoaded] = useState(false);
@@ -44,7 +45,7 @@ export default function DashboardDiagnosis({navigation, route}) {
       setLoaded(true);
       try {
         let token =await  _retrieveToken();
-        const resp=await axios.get('admin/diagnosis',{
+        const resp=await axios.get(BASE_URL+'admin/diagnosis',{
             headers: {
                Authorization: "Bearer "+token
             }
@@ -66,7 +67,7 @@ export default function DashboardDiagnosis({navigation, route}) {
         setLoaded(true);
         let token =await  _retrieveToken();
         try{
-        const resp=await axios.post('admin/diagnosis/',e,{
+        const resp=await axios.post(BASE_URL+'admin/diagnosis/',e,{
           headers: {
              Authorization: "Bearer "+token
           }
@@ -91,7 +92,7 @@ export default function DashboardDiagnosis({navigation, route}) {
         setLoaded(true);
         let token =await  _retrieveToken();
         try{
-        const resp=await axios.post('admin/appointment',e,{
+        const resp=await axios.post(BASE_URL+'admin/appointment',e,{
           headers: {
              Authorization: "Bearer "+token
           }
@@ -117,7 +118,7 @@ export default function DashboardDiagnosis({navigation, route}) {
         setLoaded(true); setDiagnosis([]);
         let token =await  _retrieveToken();
         try{
-        const resp=await axios.get('medic/symptoms',{
+        const resp=await axios.get(BASE_URL+'medic/symptoms',{
           headers: {
              Authorization: "Bearer "+token
           }
@@ -139,7 +140,7 @@ export default function DashboardDiagnosis({navigation, route}) {
         setLoaded(true);
         let token =await  _retrieveToken();
         try{
-        const resp=await axios.get(`medic/diagnosis?symptom=${data.symptom}&gender=${data.gender}&dob=${data.year}`,{
+        const resp=await axios.get(BASE_URL+`medic/diagnosis?symptom=${data.symptom}&gender=${data.gender}&dob=${data.year}`,{
           headers: {
              Authorization: "Bearer "+token
           }
@@ -161,12 +162,12 @@ export default function DashboardDiagnosis({navigation, route}) {
         setLoaded(true);
         let token =await  _retrieveToken();
         try{
-        const resp=await axios.get('admin/diagnosis/search?idno='+e,{
+        const resp=await axios.get(BASE_URL+'admin/diagnosis/search?idno='+e,{
             headers: {
                Authorization: "Bearer "+token
             }
         })
-        getDiagnosisd(resp.data.data);
+        setDiagnosisd(resp.data.data);
           setLoaded(false);
         } catch (error) {
             errorMessage(toast,error.message);
@@ -186,7 +187,7 @@ export default function DashboardDiagnosis({navigation, route}) {
     }
     if(num==0){
         
-        const resp=await axios.get('admin/appointment/'+data.id,{
+        const resp=await axios.get(BASE_URL+'admin/appointment/'+data.id,{
             headers: {
                Authorization: "Bearer "+token
             }
@@ -198,7 +199,7 @@ export default function DashboardDiagnosis({navigation, route}) {
         setModalTitle("Add Appointment");setModalType(num);
     }
     if(num==1){
-        const resp=await axios.get('admin/patient/'+data.id,{
+        const resp=await axios.get(BASE_URL+'admin/patient/'+data.id,{
             headers: {
                Authorization: "Bearer "+token
             }
@@ -247,7 +248,7 @@ export default function DashboardDiagnosis({navigation, route}) {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control onChange={(e)=>retrieveSearch(e.target.value)} type="text" placeholder="Search Employee with ID" />
+              <Form.Control onChange={(e)=>retrieveSearch(e.target.value)} type="text" placeholder="Search patients using ID and name" />
             </InputGroup>
           </Col>
           <Col xs={4} md={4} xl={3} className="ps-md-0">

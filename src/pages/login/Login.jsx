@@ -11,9 +11,7 @@ import { _retrieveData, statusMessage,errorMessage,warningMessage, _storeData, _
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { Loading } from "../../components/Loader";
-
-
-
+import {BASE_URL} from "../../.env.js";
 
 export default function Signin({navigation, route}) {
   const [getEmail,setEmail] = useState(null);
@@ -37,7 +35,7 @@ setPassword('123456');
     email:getEmail,
     password:getPassword,
   }
-  let res=await axios.post('auth/login',datat)
+  let res=await axios.post(BASE_URL+'auth/login',datat)
   if(res.data.status){ 
     setLoading(false)
     _storeData(res.data.data.token,"token");

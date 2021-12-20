@@ -13,13 +13,13 @@ import { _retrieveToken } from './Service/function';
 import { useEffect, useState } from 'react';
 
 function App() {
- 
   
   return (
     <Router>
         <Switch>
       <Route exact path="/dashboard"component={() => <Home />} />
       <Route exact path="/"component={() => <Login />} />
+      <Route exact path="/login"component={() => <Login />} />
       <Route exact path="/department"component={() => <Department />} />
       <Route exact path="/patient"component={() => <Patient />} />
       <Route exact path="/appointment"component={() => <Appointment />} />
