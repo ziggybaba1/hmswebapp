@@ -18,19 +18,20 @@ import { PatientListTable } from "../../components/table/patient";
 import { DiagnosisForm } from "../../components/form/diagnosis";
 import { AppointmentForm } from "../../components/form/appointment";
 import { BASE_URL } from '../../.env.js';
+import { DoctorForm } from "../../components/form/doctor";
+import { DoctorListTable } from "../../components/table/doctor";
 
-export default function DashboardPatient({navigation, route}) {
+export default function DashboardDoctor({navigation, route}) {
     const [isLoading, setLoaded] = useState(false);
-    const [getPatient, setPatient] = useState([]);
+    const [getDoctor, setDoctor] = useState([]);
     const [singlepatient, setSinglepatient] = useState({});
     const [encID,setEncID]=useState(null);
-    const [idno, setIdno] = useState("");
+    const [singledoc, setSingleDoc] = useState({});
     const [showDialog,setDialog]=useState(false);
     const [modaltitle,setModalTitle]=useState("");
     const [modaltype,setModalType]=useState(null);
     const [symptoms,setSymptom]=useState([]);
     const [diagnosis,setDiagnosis]=useState([]);
-    const[doctor,setDoctor]=useState([]);
     const [department,setDepartment]=useState([]);
     const [datadiagnosis,setDataDiagnosis]=useState([])
     const history = useHistory();
@@ -38,13 +39,14 @@ export default function DashboardPatient({navigation, route}) {
     useEffect(() => {
       getDashData();
       retrieveSymptoms();
+      getDashDept();
     }, []);
 
     const getDashData=async()=>{
       setLoaded(true);
       try {
         let token =await  _retrieveToken();
-        const resp=await axios.get(BASE_URL+'admin/patient',{
+        const resp=await axios.get(BASE_URL+'admin/doctor',{
             headers: {
                Authorization: "Bearer "+token
             }
@@ -52,7 +54,7 @@ export default function DashboardPatient({navigation, route}) {
        if(!resp.data.status){
             history.push("/login");
         }
-        setPatient(resp.data.data);
+        setDoctor(resp.data.data);
         setLoaded(false);
     } catch (error) {
         errorMessage(toast,error.message);
@@ -61,11 +63,32 @@ export default function DashboardPatient({navigation, route}) {
      
     }
 
-    const addPatient= async (e)=>{
+    const getDashDept=async()=>{
+        setLoaded(true);
+        try {
+          let token =await  _retrieveToken();
+          const resp=await axios.get(BASE_URL+'admin/department',{
+              headers: {
+                 Authorization: "Bearer "+token
+              }
+          })
+         if(!resp.data.status){
+              history.push("/login");
+          }
+          setDepartment(resp.data.data);
+          setLoaded(false);
+      } catch (error) {
+          errorMessage(toast,error.message);
+          setLoaded(false);
+      }
+       
+      }
+
+    const addDoctor= async (e)=>{
       setLoaded(true);
       let token =await  _retrieveToken();
       try{
-      const resp=await axios.post(BASE_URL+'admin/patient',e,{
+      const resp=await axios.post(BASE_URL+'admin/doctor',e,{
         headers: {
            Authorization: "Bearer "+token
         }
@@ -85,11 +108,11 @@ export default function DashboardPatient({navigation, route}) {
     }
     }
 
-    const updatePatient= async (e)=>{
+    const updateDoctor= async (e)=>{
         setLoaded(true);
         let token =await  _retrieveToken();
         try {
-            const resp=await axios.post(BASE_URL+'admin/patient/update/'+encID,e,{
+            const resp=await axios.post(BASE_URL+'admin/doctor/update/'+encID,e,{
                 headers: {
                    Authorization: "Bearer "+token
                 }
@@ -108,26 +131,6 @@ export default function DashboardPatient({navigation, route}) {
                 setLoaded(false);
             }
         
-      }
-
-      const retrieveDoctors= async(e)=>{
-        setLoaded(true);
-        try {
-          let token =await  _retrieveToken();
-          const resp=await axios.get(BASE_URL+'admin/doctor/retrieve/data?data='+e,{
-              headers: {
-                 Authorization: "Bearer "+token
-              }
-          })
-         if(!resp.data.status){
-              history.push("/login");
-          }
-          setDoctor(resp.data.data);
-          setLoaded(false);
-      } catch (error) {
-          errorMessage(toast,error.message);
-          setLoaded(false);
-      }
       }
 
       const submitDiagosis=async(e)=>{
@@ -229,12 +232,12 @@ export default function DashboardPatient({navigation, route}) {
         setLoaded(true);
         let token =await  _retrieveToken();
         try{
-        const resp=await axios.get(BASE_URL+'admin/patient/search?idno='+e,{
+        const resp=await axios.get(BASE_URL+'admin/doctor/search?idno='+e,{
             headers: {
                Authorization: "Bearer "+token
             }
         })
-        setPatient(resp.data.data);
+        setDoctor(resp.data.data);
           setLoaded(false);
         } catch (error) {
             errorMessage(toast,error.message);
@@ -246,24 +249,23 @@ export default function DashboardPatient({navigation, route}) {
     setLoaded(true);
     let token =await  _retrieveToken();
     try{
-    setSinglepatient({});
-    
-    setDialog(true);
+    setSingleDoc({});
     if(num!=3){
-        setSinglepatient(data);
+        setSingleDoc(data);
     }
     if(num==0){
         
-        const resp=await axios.get(BASE_URL+'admin/appointment/'+data.id,{
+        const resp=await axios.get(BASE_URL+'admin/doctor/'+data.id,{
             headers: {
                Authorization: "Bearer "+token
             }
         })
         setEncID(resp.data.data.e_id);
+
         // setDoctor(resp.data.data.doctor);
-        setDepartment(resp.data.data.department);
-        setDataDiagnosis(resp.data.data.diagnosis);
-        setModalTitle("Add Appointment");setModalType(num);
+        // setDepartment(resp.data.data.department);
+        // setDataDiagnosis(resp.data.data.diagnosis);
+        // setModalTitle("Add Appointment");setModalType(num);
     }
     if(num==1){
         const resp=await axios.get(BASE_URL+'admin/patient/'+data.id,{
@@ -281,6 +283,10 @@ export default function DashboardPatient({navigation, route}) {
     }
    }
 
+   const newAdd=()=>{
+    setSingleDoc({});
+   }
+
 
   return (
     <>
@@ -291,10 +297,10 @@ export default function DashboardPatient({navigation, route}) {
         <div className="d-block mb-4 mb-xl-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
-            <Breadcrumb.Item>Patients</Breadcrumb.Item>
+            <Breadcrumb.Item>Doctors</Breadcrumb.Item>
             <Breadcrumb.Item active>list</Breadcrumb.Item>
           </Breadcrumb>
-          <h4>Patients list</h4>
+          <h4>Doctors list</h4>
           <p className="mb-0">
           </p>
         </div>
@@ -315,7 +321,7 @@ export default function DashboardPatient({navigation, route}) {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control onChange={(e)=>retrieveSearch(e.target.value)} type="text" placeholder="Search patients using ID and name" />
+              <Form.Control onChange={(e)=>retrieveSearch(e.target.value)} type="text" placeholder="Search using department and name" />
             </InputGroup>
           </Col>
           <Col xs={4} md={4} xl={3} className="ps-md-0">
@@ -327,22 +333,24 @@ export default function DashboardPatient({navigation, route}) {
       </div>
       <Row className="justify-content-between">
           <Col xs={12} md={4} lg={4} xl={4}>
-<PatientForm
-addPatient={addPatient}
-patient={singlepatient}
+<DoctorForm
+addDoctor={addDoctor}
+updateDoctor={updateDoctor}
+newAdd={newAdd}
+department={department.data?department.data:[]}
+detail={singledoc}
 loading={isLoading}
 encID={encID}
-updatePatient={updatePatient}
 />
               </Col>
               <Col xs={12} md={8} lg={8} xl={8}>
-      <PatientListTable
-      data={getPatient.data?getPatient.data:[]}
+      <DoctorListTable
+      data={getDoctor.data?getDoctor.data:[]}
       doEdit={doEdit}
     //   clickNext={clickNext}
     //   doArchive={doArchive}
     //   doUArchive={doUArchive}
-      linker={getPatient}
+      linker={getDoctor}
       loading={isLoading}
       />
       </Col>
@@ -361,9 +369,8 @@ updatePatient={updatePatient}
          symptoms={symptoms}  patient={singlepatient} loading={isLoading}  />}
          {modaltype==0&&<AppointmentForm
         submitAppointment={submitAppointment}
-        retrieveDoctors={retrieveDoctors}
         diagnosis={datadiagnosis}
-        doctor={doctor}
+        // doctor={doctor}
         department={department}
         encID={encID}
            patient={singlepatient} loading={isLoading} />}

@@ -44,6 +44,11 @@ export const AppointmentForm = (props) => {
           }
       }
 
+      const retrieveDoctors=(e)=>{
+        setDiagnosis(e);
+        props.retrieveDoctors(e)
+      }
+
    
     return (
       <Card border="light" className="bg-white shadow-sm mb-4">
@@ -85,7 +90,7 @@ export const AppointmentForm = (props) => {
                <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
                   <Form.Label>Select Diagnostic Report</Form.Label>
-                  <Form.Select required onChange={(e) => { setDiagnosis(e.target.value)}}>
+                  <Form.Select required onChange={(e) => { retrieveDoctors(e.target.value)}}>
                   <option value="1">Select Report</option>
                   {props.diagnosis.map((item,i)=>(
                       <option value={item.id}>{item.diagnosis}</option>
@@ -93,14 +98,16 @@ export const AppointmentForm = (props) => {
                 </Form.Select>
                 </Form.Group>
               </Col>
+              {props.doctor&&props.doctor.length>0&&
+              <>
                <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
                   <Form.Label>Choose Doctor</Form.Label>
                   <Form.Select required onChange={(e) => { setDoctor(e.target.value)}}>
                   <option value="1">Choose Doctor</option>
-                  {props.doctor.map((item,i)=>(
+                  {props.doctor&&props.doctor[0]?props.doctor[0].map((item,i)=>(
                       <option value={item.id}>{item.name}</option>
-                  ))}
+                  )):[]}
                 </Form.Select>
                 </Form.Group>
               </Col>
@@ -122,7 +129,8 @@ export const AppointmentForm = (props) => {
                   <Form.Control  onChange={(e) => { setDescription(e.target.value)}} type="text" as="textarea" rows="3" placeholder="Enter comment" />
                 </Form.Group>
               </Col>
-  
+              </>
+                  }
               </Row>
               <div className="mt-3">
               {props.loading&&

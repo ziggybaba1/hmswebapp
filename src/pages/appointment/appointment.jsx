@@ -63,6 +63,8 @@ const [getDiagnosisd, setDiagnosisd] = useState({});
      
     }
 
+   
+
 
       const submitDiagosis=async(e)=>{
         setLoaded(true);

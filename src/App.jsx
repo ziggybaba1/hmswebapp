@@ -7,6 +7,7 @@ import Department from "./pages/department/Department";
 import Patient from "./pages/patient/Patient";
 import Diagnosis from "./pages/diagnosis/diagnosis";
 import Appointment from "./pages/appointment/appointment";
+import Doctor from './pages/doctor/Doctor';
 import { BrowserRouter as Router, Route, Switch,Redirect, useHistory } from "react-router-dom";
 import axios from 'axios';
 import { _retrieveToken } from './Service/function';
@@ -24,6 +25,7 @@ function App() {
       <Route exact path="/patient"component={() => <Patient />} />
       <Route exact path="/appointment"component={() => <Appointment />} />
       <Route exact path="/diagnosis"component={() => <Diagnosis />} />
+      <Route exact path="/doctor"component={() => <Doctor />} />
     </Switch>
 
   </Router>

@@ -4,7 +4,7 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook, faBoxOpen, faChartPie, faCog, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faCalendarAlt, faMapPin, faInbox, faRocket, faUser, faTimesCircle, faClock, faListOl, faCalendar, faProjectDiagram, faPen, faPenAlt, faUserShield, faStickyNote, faClinicMedical, faCalendarTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faBoxOpen, faChartPie, faCog, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faCalendarAlt, faMapPin, faInbox, faRocket, faUser, faTimesCircle, faClock, faListOl, faCalendar, faProjectDiagram, faPen, faPenAlt, faUserShield, faStickyNote, faClinicMedical, faCalendarTimes, faUserNurse } from "@fortawesome/free-solid-svg-icons";
 import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -102,6 +102,7 @@ export default (props = {}) => {
               <NavItem title="Dashboard"  link={'/dashboard'} icon={faChartPie} />
               <NavItem title="Department"  link={'/department'} icon={faAddressBook} />
               <NavItem title="Patients"  link={'/patient'} icon={faUser} />
+              <NavItem title="Doctors"  link={'/doctor'} icon={faUserNurse} />
               <NavItem title="Diagnosis"  link={'/diagnosis'} icon={faClinicMedical} />
               <NavItem title="Appointments"  link={'/appointment'} icon={faCalendarTimes} />
 
